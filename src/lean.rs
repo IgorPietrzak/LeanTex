@@ -1,53 +1,24 @@
-// NOTE: outdated, needs a refactor once regex is generalised properly.
-
+use regex::Captures;
 
 #[derive(Debug)]
 pub struct LeanParsed {
-    full: Option<String>,
-    params: Option<String>,
-    params_type: Option<String>,
-    statement: Option<String>,
-    proof: Option<String>,
+    pub full: Option<String>,
+    pub name: Option<String>,
+    pub params: Option<String>,
+    pub hypothesis: Option<String>,
+    pub statement: Option<String>,
+    pub proof: Option<String>,
 }
 
 impl LeanParsed {
-    pub fn new() -> Self {
-        LeanParsed {
-            full: None,
-            params: None,
-            params_type: None,
-            statement: None,
-            proof: None,
-        }
-    }
-
-    pub fn full(mut self, full: &str) -> Self {
-        self.full = Some(String::from(full));
-        self
-    }
-    pub fn params(mut self, params: &str) -> Self {
-        self.params = Some(String::from(params));
-        self
-    }
-    pub fn params_type(mut self, params_type: &str) -> Self {
-        self.params_type = Some(String::from(params_type));
-        self
-    }
-    pub fn statement(mut self, statement: &str) -> Self {
-        self.statement = Some(String::from(statement));
-        self
-    }
-    pub fn proof(mut self, proof: &str) -> Self {
-        self.proof = Some(String::from(proof));
-        self
-    }
-    pub fn build(self) -> Self {
-        LeanParsed {
-            full: self.full,
-            params: self.params,
-            params_type: self.params_type,
-            statement: self.statement,
-            proof: self.proof,
+    pub fn new(regex_cap_groups: Captures) -> Self {
+        Self {
+            full: regex_cap_groups.get(0).map(|m| m.as_str().to_string()),
+            name: regex_cap_groups.get(1).map(|m| m.as_str().to_string()),
+            params: regex_cap_groups.get(2).map(|m| m.as_str().to_string()),
+            hypothesis: regex_cap_groups.get(3).map(|m| m.as_str().to_string()),
+            statement: regex_cap_groups.get(4).map(|m| m.as_str().to_string()),
+            proof: regex_cap_groups.get(5).map(|m| m.as_str().to_string()),
         }
     }
 }

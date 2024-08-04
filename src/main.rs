@@ -1,34 +1,11 @@
 use regex::Regex;
 mod examples;
 mod lean;
+mod regex_expr;
 fn main() {
-    // NOTE: params and hypothesis patterns are both optional
-    // TODO: probably worth having this is a Regex struct
-    let statement_type = r"Statement\s+";
-    let statement_name = r"(\w*)\s*";
-    let params = r"(\{(?:[^:]+\s*:\s*[^\}]+\}\s*)+)";
-    let hypothesis = r"(\((?:[^:]+\s*:\s*[^\)]+\)\s*)+)";
-    let statement = r":\s*([^:]+)\s*:=\s*by\s*";
-    let proof = r"(?s:(.*))";
-
-    let combined_pattern = format!(
-        "{}{}{}{}{}{}",
-        statement_type, statement_name, params, hypothesis, statement, proof
-    );
-
-    let re = Regex::new(&combined_pattern).unwrap();
-    // QUESTION: maybe can build LeanParsed struct straight from re.captures??
-    if let Some(caps) = re.captures(examples::LE_ANTISYMM) {
-        println!("0 :{}", caps.get(0).unwrap().as_str());
-        println!("1: {}", caps.get(1).unwrap().as_str());
-        println!("2: {}", caps.get(2).unwrap().as_str());
-        println!("3: {}", caps.get(3).unwrap().as_str());
-        println!("4: {}", caps.get(4).unwrap().as_str());
-        println!("5: {}", caps.get(5).unwrap().as_str());
-    } else {
-        println!("No match found.");
-    }
-}
+    let pattern = regex_expr::REGEX::new().pattern;
+    let re = Regex::new(&pattern).unwrap();
+   }
 
 // TODO:
 // Generalise the regex more and more.

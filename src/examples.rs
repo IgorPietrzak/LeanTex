@@ -19,3 +19,58 @@ pub const LE_ANTISYMM: &'static str = r#"Statement le_antisymm {𝓕 𝓖 : Filt
   rw[le_def] at *
   apply h1
 "#;
+
+pub const INTER_COMM: &'static str = r#"Statement inter_comm (S T : Set 𝓧) : S ∩ T = T ∩ S := by
+  Hint "Start with `ext a`."
+  ext a
+  Hint "We are trying to get this goal into a form where the `tauto` tactic
+  will solve it. Click on the `tauto` tactic on the right to see what
+  it does. Then try `rw [mem_inter_iff]`"
+  rw [mem_inter_iff]
+  Hint "Now do it again, and the goal will be purely a logic goal."
+  rw [mem_inter_iff]
+  Hint "This has now got nothing to do with sets. Prove this logic goal with `tauto`."
+  tauto"#;
+
+pub const COMAP_UNIV_MEM: &'static str = r#"Statement comap_univ_mem : univ ∈ 𝓖.comap φ := by
+  sorry"#;
+
+#[cfg(test)]
+mod test {
+    use crate::{examples, lean, regex_expr};
+    use regex::Regex;
+    #[test]
+    fn examples() {
+        let pattern = regex_expr::REGEX::new().pattern;
+        let re = Regex::new(&pattern).unwrap();
+
+        if let Some(caps) = re.captures(examples::INTER_COMM) {
+            println!("\n\n INTER COMM \n ------- ");
+            let lean = lean::LeanParsed::new(caps);
+            println!("{:#?}", lean);
+        } else {
+            println!("No match found.");
+        }
+        if let Some(caps) = re.captures(examples::UNIV_MEM_PRINCIPAL) {
+            println!("\n\n UNIV_MEM_PRINCIPAL \n ------- ");
+            let lean = lean::LeanParsed::new(caps);
+            println!("{:#?}", lean);
+        } else {
+            println!("No match found.");
+        }
+        if let Some(caps) = re.captures(examples::LE_ANTISYMM) {
+            println!("\n\n LE_ANTISYMM \n ------- ");
+            let lean = lean::LeanParsed::new(caps);
+            println!("{:#?}", lean);
+        } else {
+            println!("No match found.");
+        }
+        if let Some(caps) = re.captures(examples::COMAP_UNIV_MEM) {
+            println!("\n\n COMAP_UNIV_MEM \n ------- ");
+            let lean = lean::LeanParsed::new(caps);
+            println!("{:#?}", lean);
+        } else {
+            println!("No match found.");
+        }
+    }
+}
