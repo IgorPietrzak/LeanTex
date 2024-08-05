@@ -10,10 +10,9 @@ pub struct Markdown {
 
 impl Markdown {
     pub fn new(parsed_lean: LeanParsed) -> Self {
-        let content = make_content(parsed_lean); 
-        
-              
-                            Self {
+        let content = make_content(parsed_lean);
+
+        Self {
             file_content: content,
         }
     }
