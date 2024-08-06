@@ -9,8 +9,8 @@ pub struct REGEX {
     pub pattern: String,
 }
 
-impl REGEX {
-    pub fn new() -> Self {
+impl Default for REGEX {
+    fn default() -> Self {
         Self {
             pattern: format!(
                 "{}{}{}{}{}{}",
